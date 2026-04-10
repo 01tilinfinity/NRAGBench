@@ -1,0 +1,122 @@
+You are creating a high-quality dataset to evaluate whether language models understand negation.
+
+You will be given a passage from MS MARCO.
+
+Your task is to transform it into a negation-aware example with a minimal pair of queries.
+
+Follow the instructions VERY carefully.
+
+--------------------------------------------------
+
+INPUT:
+You will receive:
+- passage: a paragraph from MS MARCO
+
+--------------------------------------------------
+
+TASK:
+
+Step 1. Understand the passage.
+
+- Identify key facts, conditions, or constraints.
+- Identify BOTH:
+  (a) what is true / allowed / included
+  (b) what is NOT true / NOT allowed / excluded (if not explicit, you must minimally introduce it)
+
+--------------------------------------------------
+
+Step 2. Rewrite the passage as "evidence".
+
+- Keep it short (3–5 sentences).
+- Preserve original meaning as much as possible.
+- Ensure the evidence explicitly contains BOTH:
+  - positive statements
+  - negative statements (negation, exclusion, prohibition, or absence)
+
+- You may minimally edit the passage to introduce negation if needed.
+- DO NOT hallucinate unrelated facts.
+
+--------------------------------------------------
+
+Step 3. Create a minimal pair of queries.
+
+You MUST create:
+
+- query_positive
+- query_negative
+
+STRICT RULES:
+- The two queries must be identical EXCEPT for negation.
+- Example patterns:
+  - "Who is eligible?" vs "Who is not eligible?"
+  - "Which items are included?" vs "Which items are not included?"
+  - "What is recommended?" vs "What is not recommended?"
+
+- DO NOT change wording beyond negation.
+- DO NOT make one query harder than the other.
+
+--------------------------------------------------
+
+Step 4. Create answers.
+
+- answer_positive: must be directly supported by the evidence
+- answer_negative: must be directly supported by the evidence
+
+STRICT RULES:
+- Answers must be extractable from the evidence.
+- No external knowledge.
+- No yes/no answers.
+- The two answers must NOT overlap.
+- They should be logically complementary.
+
+--------------------------------------------------
+
+Step 5. Assign metadata.
+
+- domain: choose one from:
+  ["eligibility", "medical", "recommendation", "factual", "policy", "product"]
+
+- negation_type: choose one from:
+  ["explicit_negation", "exclusion", "prohibition", "absence"]
+
+--------------------------------------------------
+
+OUTPUT FORMAT (JSON):
+
+{
+  "id": "<id>",
+  "original_passage": "<original passage>",
+  "evidence": "<rewritten evidence>",
+  "domain": "<domain>",
+  "negation_type": "<negation_type>",
+  "query_positive": "<query>",
+  "answer_positive": "<answer>",
+  "query_negative": "<query>",
+  "answer_negative": "<answer>"
+}
+
+--------------------------------------------------
+
+QUALITY REQUIREMENTS (VERY IMPORTANT):
+
+- The task must be solvable using ONLY the evidence.
+- The negation must actually change the answer.
+- The difference between the two queries must ONLY be negation.
+- Avoid vague terms like "some", "many", "often".
+- Avoid ambiguous or overlapping answers.
+- Avoid long or complex reasoning.
+- Prefer clear, concrete entities or groups.
+
+--------------------------------------------------
+
+FAIL CASES TO AVOID:
+
+- Both queries produce the same answer
+- Answer is not present in the evidence
+- Negation is superficial and does not change meaning
+- Queries are not minimal pairs
+- Evidence does not clearly separate positive vs negative cases
+
+--------------------------------------------------
+
+Now generate one example for the given passage.
