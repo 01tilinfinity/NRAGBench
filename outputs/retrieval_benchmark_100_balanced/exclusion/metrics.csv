@@ -1,0 +1,6 @@
+subset,retriever,srn,mrr,distance_gap,absence_top1,semantic_collapse_rate,samples
+exclusion,bm25,0.64,0.7736666666666667,,0.9,,50
+exclusion,dense::BAAI/bge-small-en-v1.5,0.74,0.87,0.02638206720352173,1.0,0.26,50
+exclusion,hybrid::BAAI/bge-small-en-v1.5,0.5,0.7816666666666666,0.02638206720352173,0.96,0.26,50
+exclusion,dense::intfloat/e5-small-v2,0.68,0.84,0.010583630800247192,1.0,0.32,50
+exclusion,hybrid::intfloat/e5-small-v2,0.48,0.7833333333333333,0.010583630800247192,0.96,0.32,50

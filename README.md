@@ -84,3 +84,62 @@ outputs/msmarco_negative_rag.jsonl
 MS MARCO는 Hugging Face의 `microsoft/ms_marco`를 `datasets` 라이브러리로 불러오도록 구성했습니다:
 
 - [MS MARCO dataset page](https://huggingface.co/datasets/microsoft/ms_marco)
+
+## 7. Track 1 Retrieval Benchmark
+
+최신 실험 설계 기준으로 `query_neg`, `doc_gold`, `doc_distractor`, `corpus`를 직접 생성한 뒤,
+Dense / BM25 / Hybrid 검색 성능을 비교할 수 있습니다.
+
+### 7-1. Track 1 benchmark 생성
+
+MS MARCO에서 샘플을 뽑아 OpenAI로 triplet benchmark를 생성:
+
+```bash
+python src/build_track1_benchmark.py \
+  --sample-size 1000 \
+  --output-path outputs/track1_benchmark_1k.jsonl
+```
+
+출력 구조:
+
+```json
+{
+  "sample_id": "34300",
+  "query_pos": "What is cost of sales?",
+  "query_neg": "What is not cost of sales?",
+  "doc_gold": {"doc_id": "34300_gold", "text": "..."},
+  "doc_distractor": {"doc_id": "34300_dist", "text": "..."},
+  "answer_gold": "...",
+  "excluded_target": "...",
+  "negation_type": "exclusion",
+  "domain": "factual",
+  "corpus": [
+    {"doc_id": "34300_gold", "text": "...", "label": "gold"},
+    {"doc_id": "34300_dist", "text": "...", "label": "distractor"},
+    {"doc_id": "etc", "text": "...", "label": "background"}
+  ]
+}
+```
+
+### 7-2. Retrieval Bottleneck 평가
+
+```bash
+python src/run_retrieval_benchmark.py \
+  --input-path outputs/track1_benchmark_1k.jsonl \
+  --output-dir outputs/retrieval_benchmark_1k
+```
+
+평가 항목:
+
+- `SRN`: `Score(Q_neg, D_gold) > Score(Q_neg, D_dist)` 비율
+- `MRR`: gold doc의 reciprocal rank
+- `Distance Gap`: `distance(Q_neg, D_dist) - distance(Q_neg, D_gold)` 평균
+- `Absence Top-1`: gold 제거 후 distractor가 top-1이 되는 비율
+- `Semantic Collapse Rate`: dense distance gap이 음수인 비율
+
+출력:
+
+- `metrics.csv`
+- `metrics.json`
+- `tsne_*.png`
+- `collapse_examples_*.jsonl`

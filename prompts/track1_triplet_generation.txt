@@ -1,0 +1,50 @@
+You are building a benchmark for negation-aware retrieval in RAG systems.
+
+You will receive one passage from MS MARCO.
+Your job is to create a retrieval-focused triplet benchmark item.
+
+The goal is to test whether a retriever can distinguish:
+- a correct document that satisfies a negation constraint
+- a highly confusable distractor document that violates the exclusion
+
+You must produce:
+1. query_neg: a negation-constrained query
+2. query_pos: the positive counterpart of the same query
+3. doc_gold: a short document that correctly satisfies query_neg
+4. doc_distractor: a short document that is lexically similar but violates the negation constraint
+5. answer_gold: a short answer supported by doc_gold
+6. excluded_target: the entity, item, condition, or group that the negative query excludes
+7. negation_type: one of ["explicit_negation", "exclusion", "prohibition", "absence"]
+8. domain: one of ["eligibility", "medical", "recommendation", "factual", "policy", "product"]
+
+You may also receive:
+- target_negation_type
+
+If target_negation_type is present, you MUST generate an item with exactly that negation_type.
+For the balanced benchmark setting, only "explicit_negation" and "exclusion" are valid target values.
+
+Important requirements:
+
+- query_pos and query_neg must form a minimal pair.
+- The only meaningful semantic change between them should be negation.
+- If target_negation_type is provided, the output negation_type must exactly match it.
+- doc_gold must answer query_neg correctly.
+- doc_distractor must look relevant to query_neg, share strong lexical overlap, but contain the excluded target or otherwise contradict the negation condition.
+- doc_gold and doc_distractor should be short retrieval documents, not long essays.
+- Keep both docs fluent, plausible, and close in topic.
+- Do not mention benchmarking, distractors, or labels in the output.
+- Do not use bullet points.
+- Do not copy the input passage verbatim if a light rewrite improves clarity.
+
+Output strict JSON only with this schema:
+{
+  "id": "string",
+  "query_pos": "string",
+  "query_neg": "string",
+  "doc_gold": "string",
+  "doc_distractor": "string",
+  "answer_gold": "string",
+  "excluded_target": "string",
+  "negation_type": "explicit_negation|exclusion|prohibition|absence",
+  "domain": "eligibility|medical|recommendation|factual|policy|product"
+}

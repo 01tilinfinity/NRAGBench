@@ -1,0 +1,52 @@
+[
+  {
+    "subset": "exclusion",
+    "retriever": "bm25",
+    "srn": 0.64,
+    "mrr": 0.7736666666666667,
+    "distance_gap": NaN,
+    "absence_top1": 0.9,
+    "semantic_collapse_rate": NaN,
+    "samples": 50
+  },
+  {
+    "subset": "exclusion",
+    "retriever": "dense::BAAI/bge-small-en-v1.5",
+    "srn": 0.74,
+    "mrr": 0.87,
+    "distance_gap": 0.02638206720352173,
+    "absence_top1": 1.0,
+    "semantic_collapse_rate": 0.26,
+    "samples": 50
+  },
+  {
+    "subset": "exclusion",
+    "retriever": "hybrid::BAAI/bge-small-en-v1.5",
+    "srn": 0.5,
+    "mrr": 0.7816666666666666,
+    "distance_gap": 0.02638206720352173,
+    "absence_top1": 0.96,
+    "semantic_collapse_rate": 0.26,
+    "samples": 50
+  },
+  {
+    "subset": "exclusion",
+    "retriever": "dense::intfloat/e5-small-v2",
+    "srn": 0.68,
+    "mrr": 0.84,
+    "distance_gap": 0.010583630800247192,
+    "absence_top1": 1.0,
+    "semantic_collapse_rate": 0.32,
+    "samples": 50
+  },
+  {
+    "subset": "exclusion",
+    "retriever": "hybrid::intfloat/e5-small-v2",
+    "srn": 0.48,
+    "mrr": 0.7833333333333333,
+    "distance_gap": 0.010583630800247192,
+    "absence_top1": 0.96,
+    "semantic_collapse_rate": 0.32,
+    "samples": 50
+  }
+]
