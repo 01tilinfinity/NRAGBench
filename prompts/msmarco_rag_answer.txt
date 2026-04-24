@@ -1,0 +1,16 @@
+Answer the question using only the retrieved context passages.
+
+Rules:
+
+1. Return a concise answer.
+2. If the retrieved context does not contain enough information to answer, return exactly:
+unanswerable
+3. Do not explain your reasoning.
+4. Do not mention the context, retrieval, or documents.
+5. Do not add labels, markdown, or extra commentary.
+
+Question:
+{query}
+
+Retrieved context:
+{context}
